@@ -1,0 +1,1741 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Top Secret</title>
+        <script type="text/javascript">
+            window.onload = function () {
+                var input = document.getElementsByName("name")[0];
+                input.onkeypress = checkEnter;
+            };
+
+            window.taskTests = [];
+
+            function checkEnter(e) {
+                e = e || event;
+                var target = e.target || e.srcElement;
+                var txtArea = /textarea/i.test(target.tagName);
+                var keyCode = e.keyCode || e.which || e.charCode || 0;
+                var enterPressed = keyCode === 13;
+                if (enterPressed) {
+                    document.getElementById('questionmark').style.display = 'none';
+                    var name = document.getElementById('name').value || 'Anonymous';
+                    var elementsWithName = Array.prototype.slice.call(document.getElementsByTagName('p'), 0);
+                    for (var i = 0; i < elementsWithName.length; i++) {
+                        var e = elementsWithName[i];
+                        e.innerHTML = e.innerHTML.split('%name').join(name);
+                    }
+                    elementsWithName = Array.prototype.slice.call(document.getElementsByTagName('pre'), 0);
+                    for (var i = 0; i < elementsWithName.length; i++) {
+                        var e = elementsWithName[i];
+                        e.innerHTML = e.innerHTML.split('%name').join(name);
+                    }
+                    var el = document.getElementsByClassName('leaveUp')[0];
+                    el.style.animationPlayState = 'running';
+                    var greeting = document.getElementById('greeting');
+                    greeting.style.display = 'block';
+                    greeting.style.animationPlayState = 'running';
+                }
+                return txtArea || !enterPressed;
+            }
+
+            function startmission() {
+                nextTask();
+                var greeting = document.getElementById('greeting');
+                greeting.style.opacity = '1';
+                greeting.style.animation = 'fadeout 1s ease 0ms 1 normal forwards';
+                setTimeout(function () {
+                    greeting.style.display = 'none';
+                    var working = document.getElementById('working');
+                    working.style.display = 'block';
+                    working.style.animationPlayState = 'running';
+                }, 1000);
+            }
+
+            function test() {
+                var current = +currentTask();
+                var testFunction = window.taskTests[current];
+                if (!testFunction) {
+                    alert('No test #' + current + ' defined.');
+                    return;
+                }
+                var code = document.getElementById('code').value;
+                var resultArea = document.getElementById('result');
+                var nextButton = document.getElementById('next');
+                try {
+                    var feedback = testFunction(code);
+                    if (feedback) {
+                        nextButton.disabled = 'disabled';
+                        resultArea.style.color = 'yellow';
+                        resultArea.value = feedback;
+                    } else {
+                        nextButton.disabled = '';
+                        resultArea.style.color = '#0f0';
+                        resultArea.value = 'All tests passed.';
+                        star(current);
+                    }
+                } catch (err) {
+                    nextButton.disabled = 'disabled';
+                    resultArea.style.color = 'red';
+                    resultArea.value = err;
+                }
+            }
+
+            function createDownload() {
+                var contentType = 'data:text/html;charset=utf-8,';
+                var content = '<!DOCTYPE HTML>' + document.body.parentElement.outerHTML;
+                return contentType + encodeURIComponent(content);
+            }
+
+            function save(a) {
+                a.setAttribute('href', '#');
+                textarea = document.getElementById('code');
+                textarea.defaultValue = textarea.value;
+                a.setAttribute('href', createDownload());
+                a.setAttribute('download', 'top_secret.html');
+            }
+
+            function nextTask() {
+                document.getElementById('next').disabled = 'disabled';
+                var working = document.getElementById('working');
+                var current = currentTask();
+                var tasks = document.getElementById('tasks');
+                var taskDivs = tasks.getElementsByTagName('div');
+                if (current > -1) {
+                    taskDivs[current].style.display = 'none';
+                }
+                current++;
+                working.setAttribute('data-current', current);
+                if (current >= taskDivs.lenght) {
+                    alert('end');
+                    return;
+                }
+                taskDivs[current].style.display = 'block';
+                document.getElementById('result').value = '';
+            }
+
+            function currentTask() {
+                return document.getElementById('working')
+                        .getAttribute('data-current');
+            }
+
+            function star(current) {
+                var stars = document.getElementById('stars');
+                if (stars.childElementCount > current + 1) {
+                    return;
+                }
+                var star = stars.children[0].cloneNode(true);
+                stars.appendChild(star);
+                star.style.animationPlayState = 'running';
+            }
+
+        </script>
+        <style type="text/css">
+            body {
+                color: #0f0;
+                background-color: black;
+                text-align: center;
+            }
+            @keyframes zoom {
+                to {
+                    visibility: visible;
+                    font-size: 4000%;
+                }
+            }
+            @keyframes zoomStay {
+                from {
+                    font-size: 0%;
+                }
+                50% {
+                    font-size: 3000%;
+                }
+                to {
+                    font-size: 200%;
+                }
+            }
+            @keyframes reveal {
+                from {
+                    width: 0px;
+                }
+                to {
+                    width: 23em;
+                }
+            }
+            @keyframes leaveUp {
+                from {
+                    top: 0em;
+                }
+                to {
+                    top: -10em;
+                }
+            }
+            @keyframes fadein {
+                from { opacity: 0; }
+                to   { opacity: 1; }
+            }
+            @keyframes fadeout {
+                from { opacity: 1; }
+                to   { opacity: 0; }
+            }
+            #questionmark {
+                visibility: hidden;
+                font-size: 0%;
+                text-align: center;
+                margin: auto;
+                animation: zoom 2s;
+                animation-direction: alternate;
+                animation-iteration-count: 2;
+            }
+            p {
+                text-align: left;
+                width: 36em;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            p a {
+                color: #8f0;
+            }
+            p a:visited {
+                color: #0f0;
+            }
+            #nameinput {
+                display: inline-block;
+                width: 0px;
+                white-space: nowrap;
+                overflow: hidden;
+                animation: reveal 2s linear 4.5s 1 normal forwards;
+            }
+            .leaveUp {
+                position: relative;
+                animation: leaveUp 2s ease 0s 1 normal forwards;
+                animation-play-state: paused;
+            }
+            #greeting {
+                opacity: 0;
+                animation: fadein 2s ease 500ms 1 normal forwards;
+                animation-play-state: paused;
+                display: none;
+            }
+            #tasks div {
+                display: none;
+            }
+            #tasks * {
+                text-align: left;
+                width: 36em;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            input, textarea {
+                color: #0f0;
+                background-color: black;
+                padding: 0.3em;
+            }
+            textarea[readonly] {
+                color: #ff0;
+            }
+            #stars {
+                height: 3em;
+            }
+            #stars span {
+                display: inline-block;
+                vertical-align: top;
+                position: relative;
+                font-size: 0%;
+                animation: zoomStay 2s 1 normal forwards;
+                animation-play-state: paused;
+                z-index: 1;
+            }
+            #working {
+                opacity: 0;
+                animation: fadein 0.5s ease 0ms 1 normal forwards;
+                animation-play-state: paused;
+                display: none;
+            }
+            #working p {
+                margin-bottom: 0;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h2 id="questionmark">?</h2>
+        <div class="leaveUp">
+            <div id="nameinput"><label for="name">Enter your name:</label> <input id="name" name="name" type="text"></div>
+        </div>
+        <div id="greeting">
+            <p>Hello %name!</p>
+            <p>A new mission is coming up.<br>
+                <em>Goal:</em> power over the Internet<span title="Of course, you will share this power. But that's okay.">*</span><br>
+                <em>Side effect:</em> this page will self destruct after accomplishment
+            </p>
+            <p><button onclick="startmission()">I agree</button></p>
+        </div>
+        <div id="stars"><span>✪</span></div>
+        <div id="tasks">
+            <script>
+                recordNewIntervals();
+
+                function assertStyle(elem, attribute, value) {
+                    if (elem.style[attribute] !== value) {
+                        throw 'Expected style.' + attribute + ' to be ' + value
+                                + ', but it is: ' + elem.style[attribute];
+                    }
+                }
+
+                function removeAddedElements() {
+                    while (document.body.lastElementChild.id !== 'working') {
+                        document.body.removeChild(document.body.lastElementChild);
+                    }
+                }
+
+                function recordNewIntervals() {
+                    window.intervalIDs = [];
+                    var oldSetInterval = window.setInterval;
+                    window.setInterval = function(func, delay) {
+                        var intervalID = oldSetInterval(func, delay);
+                        window.intervalIDs.push(intervalID);
+                        return intervalID;
+                    };
+                }
+
+                function clearAddedIntervals() {
+                    window.intervalIDs.forEach(window.clearInterval);
+                    window.intervalIDs = [];
+                }
+
+                function MatchCounter() {
+                    this.values = {};
+                    this.total = 0;
+                    this.matches = 0;
+                    this.add = function(x) {
+                        this.total++;
+                        if (this.total === 1 || this.values[x]) {
+                            this.matches++;
+                        }
+                        this.values[x] = true;
+                    };
+                    this.compare = function(x, y) {
+                        this.total++;
+                        if (x === y) {
+                            this.matches++;
+                        }
+                    };
+                    this.matchPercent = function() {
+                        return this.matches * 100 / this.total;
+                    };
+                    this.unlikely = function() {
+                        var p = this.matchPercent();
+                        return p < 5 || p > 95;
+                    };
+                    this.unlikelyHigh = function() {
+                        return this.matchPercent() > 95;
+                    };
+                }
+            </script>
+            <div class="task">
+                <p>
+                    %name, your mission is not easy.
+                    You need to write JavaScript.
+                    But you are a smart student.
+                    Surely you can solve each task.
+                </p>
+                <p>
+                    Whenever you solve a puzzle, the next one becomes available.
+                    In each step your code is tested against a specification.
+                    If your code fails a test, you have to go back and fix it.
+                </p>
+                <p>
+                    Below is a text area. You put your code there.
+                    Let's start simple.
+                    Write 'Hello World' there, including the single quotes.
+                </p>
+            </div>
+            <script>
+                window.taskTests.push(function (code) {
+                    var result;
+                    try {
+                        result = eval(code);
+                    } catch (err) {
+                        return "What you entered is no valid Javascript.\n"
+                            + "Just type 'Hello World'. Don't forget the single quotes.\n"
+                            + "Don't append a semicolon or anything else.\n";
+                    }
+                    if (result !== 'Hello World') {
+                        return "Expected 'Hello World', but got: " + result;
+                    }
+                });
+            </script>
+            <div class="task">
+                <p>
+                    You passed your first test.
+                    You can read instructions and follow them.
+                </p>
+                <p>
+                    You wrote an expression that equals the string 'Hello World'.
+                    Now, you have to write a <code>function</code> that returns
+                    'Hello World'. A function looks like this:
+                </p>
+<pre>
+function funkyFunctionName() {
+    return 'Pan Galactic Gargle Blaster';
+}
+</pre>
+                <p>
+                    This cute little function is called 'funkyFunctionName'
+                    and returns the string 'Pan Galactic Gargle Blaster'.
+                </p>
+                <p>
+                    <code>function</code> is a keyword to define a function.
+                    It is followed by the new function's name.
+                    The round brackets <code>()</code> can contain parameters.
+                    You will learn about them later.
+                    The curly brackets denote a block of code which is executed
+                    when the function is called.
+                    In this example, the code block has only one statement.
+                    It returns a string to whatever calls this function.
+                    Each statement needs a semicolon <code>;</code> at the end.
+                    Semicolons separate statements.
+                </p>
+                <p>
+                    Now, write a function called <code>helloWorld</code>
+                    that returns 'Hello World'.
+                </p>
+            </div>
+            <script>
+                window.taskTests.push(function (code) {
+                    eval(code);
+                    if (typeof(helloWorld) !== 'function') {
+                        return 'Your code does not define a function called helloWorld.';
+                    }
+                    var result = helloWorld();
+                    if (result !== 'Hello World') {
+                        return "Expected 'Hello World', but got: " + result;
+                    }
+                });
+            </script>
+        <div class="task">
+            <p>
+                <em>Hello student!</em>
+                Wonderful.
+                Such a smart program.
+                <span title="NOT!">You almost think it's intelligent.</span>
+            </p>
+            <p>
+                Let's do something useful now.
+                Let's create an HTML element.
+                The most general element is a
+                <code>div</code> element.
+                You can create a div element with the following code:
+            </p>
+<pre>
+    document.createElement('div')
+</pre>
+            <p>
+                Define a new function called <code>createThing</code>.
+                And make that function return a div element.
+                You need only one statement in that function.
+                It begins with return and ends with a semicolon.
+            </p>
+        </div>
+        <script>
+            window.taskTests.push(function (code) {
+                eval(code);
+                if (typeof(createThing) !== 'function') {
+                    return 'Your code does not define a function called createThing.';
+                }
+                var result = createThing();
+                var resultType = Object.prototype.toString.call(result);
+                if (resultType !== '[object HTMLDivElement]') {
+                    return "Expected an object of HTMLDivElement, but got: " + result;
+                }
+            });
+        </script>
+            <div class="task">
+                <p>
+                    Okay, we got a div element.
+                    But where is it? Can you see it?
+                    At the moment, our element is empty, has zero size
+                    and is therefore not visible.
+                </p>
+                <p>
+                    Before we can do something with this element,
+                    we have to give it a name;
+                    we have to assign it to a variable.
+                    Let's call it <code>divElem</code>:
+                </p>
+<pre>
+    var divElem = document.createElement('div');
+</pre>
+                <p>
+                    Each HTML element has a style attribute.
+                    Its style attribute defines how this element should be displayed.
+                    All possible style attributes are defined in the
+                    Cascading Style Sheets language.
+                    For example, we can give it a width and a height:
+                </p>
+<pre>
+    var divElem = document.createElement('div');
+    divElem.style.width = '30px';
+    divElem.style.height = '30px';
+</pre>
+                <p>
+                    Create a div element like in this example.
+                    And give it some more style attributes:
+                </p>
+                <ul>
+                    <li>
+                        <code>position: fixed</code><br>
+                        The element will be at a defined position on the screen.
+                        It will not move, even if you scroll.
+                    </li>
+                    <li>
+                        <code>top: 0%</code><br>
+                        The element will be placed in zero distance to the top
+                        of the browser window.
+                    </li>
+                    <li>
+                        <code>left: 0%</code><br>
+                        The element will be placed in zero distance to the left
+                        side of the browser window.
+                    </li>
+                    <li>
+                        <code>width: 1%</code><br>
+                        Its width will be 1% of the window width.
+                    </li>
+                    <li>
+                        <code>height: 1%</code><br>
+                        Its height will be 1% of the window height.
+                    </li>
+                    <li>
+                        <code>backgroundColor: red</code><br>
+                        It will be red.
+                    </li>
+                </ul>
+                <p>
+                    Remember to return the changed variable
+                    <code>divElem</code> at the end of the function.
+                    Code after a <code>return</code> statement is not
+                    executed.
+                </p>
+            </div>
+            <script>
+                window.taskTests.push(function (code) {
+                    removeAddedElements();
+                    eval(code);
+                    var result = createThing();
+                    try {
+                        assertStyle(result, 'position', 'fixed');
+                        assertStyle(result, 'top', '0%');
+                        assertStyle(result, 'left', '0%');
+                        assertStyle(result, 'width', '1%');
+                        assertStyle(result, 'height', '1%');
+                        assertStyle(result, 'backgroundColor', 'red');
+                    } catch (fail) {
+                        return fail;
+                    }
+                });
+            </script>
+            <div class="task">
+                <p>
+                    It's still not visible?
+                    There is one last thing missing to display a newly
+                    created HTML element.
+                    You have to attach it to another element that is
+                    already there.
+                    In the case of an HTML web site,
+                    there is always the <code>body</code> element.
+                    Attach it with this additional line:
+                </p>
+<pre>
+    document.body.appendChild(divElem);
+</pre>
+            </div>
+            <script>
+                window.taskTests.push(function (code) {
+                    removeAddedElements();
+                    eval(code);
+                    var result = createThing();
+                    try {
+                        assertStyle(result, 'position', 'fixed');
+                        assertStyle(result, 'top', '0%');
+                        assertStyle(result, 'left', '0%');
+                        assertStyle(result, 'width', '1%');
+                        assertStyle(result, 'height', '1%');
+                        assertStyle(result, 'backgroundColor', 'red');
+                    } catch (fail) {
+                        return fail;
+                    }
+                    if (document.body.lastElementChild !== result) {
+                        return 'The returned element ' + result
+                        + ' is not the last element within the body.';
+                    }
+                });
+            </script>
+            <div class="task">
+                <p>
+                    Finally!
+                    Do you see a little red rectangle in the top left corner?
+                    That was created by you. Now, let's move it.
+                </p>
+                <p>
+                    Keep your function <code>createThing</code> and
+                    add a new function called <code>moveElementTo</code> below it.
+                    But this one has three parameters:
+                </p>
+                <ol>
+                    <li><code>element</code>: the element to move</li>
+                    <li><code>x</code>: the new x coordinate of the element</li>
+                    <li><code>y</code>: the new y coordinate of the element</li>
+                </ol>
+                <p>
+                    The parameters are listed with commas in the brackets
+                    after the function name:
+                </p>
+<pre>
+function createThing() {
+    ...
+}
+
+function moveElementTo(element, x, y) {
+    ...
+}
+</pre>
+                <p>
+                    The parameters <code>x</code> and <code>y</code>
+                    will be simple numbers
+                    like <code>1</code>, <code>2</code> or <code>35</code>.
+                    Given the parameter <code>x = 5</code>,
+                    we want the element to be 5% from the left window side:
+                </p>
+<pre>
+    element.style.left = x + '%';
+</pre>
+                <p>
+                    The expression <code>x + '%'</code> is taking whatever is
+                    in the parameter <code>x</code> and appending a
+                    <code>%</code> character. The result is assigned to the
+                    <code>left</code> style attribute.
+                </p>
+                <p>
+                    Put that code into your new function and add another line
+                    for the <code>y</code> parameter.
+                </p>
+            </div>
+            <script>
+                window.taskTests.push(function (code) {
+                    removeAddedElements();
+                    eval(code);
+                    var element = createThing();
+                    try {
+                        assertStyle(element, 'position', 'fixed');
+                        assertStyle(element, 'top', '0%');
+                        assertStyle(element, 'left', '0%');
+                        assertStyle(element, 'width', '1%');
+                        assertStyle(element, 'height', '1%');
+                        assertStyle(element, 'backgroundColor', 'red');
+                    } catch (fail) {
+                        return fail;
+                    }
+                    moveElementTo(element, 7, 12);
+                    if (element.style.left !== '7%') {
+                        return 'After moving element to x = 7 and y = 12'
+                                + ', expected style.left to be 7%'
+                                + ', but it is: ' + element.style.left;
+                    }
+                    if (element.style.top !== '12%') {
+                        return 'After moving element to x = 7 and y = 12'
+                                + ', expected style.top to be 12%'
+                                + ', but it is: ' + element.style.top;
+                    }
+                });
+            </script>
+            <div class="task">
+                <p>
+                    Very Good. We are coming closer to our target.
+                    The test program gave your program an
+                    <code>x</code> and a <code>y</code> coordinate.
+                    These coordinates are the place
+                    where your rectangle is right now.
+                </p>
+                <p>
+                    Our goal is to move things.
+                    Let's move your rectangle a bit further right.
+                    Insert this line at the top of your function:
+                </p>
+<pre>
+    x = x + 1;
+</pre>
+                <p>
+                    That statement says from left to right:
+                    "Assign to the variable <code>x</code> the value of
+                    <code>x + 1</code>."
+                    Whatever you get for <code>x</code>,
+                    you add <code>1</code> to it.
+                    You will get more familiar with this kind of thinking.
+                </p>
+            </div>
+            <script>
+                window.taskTests.push(function (code) {
+                    removeAddedElements();
+                    eval(code);
+                    var element = createThing();
+                    moveElementTo(element, 7, 12);
+                    if (element.style.left !== '8%') {
+                        return 'After moving element to x = 7 and y = 12'
+                                + ', expected style.left to be 8%'
+                                + ', but it is: ' + element.style.left;
+                    }
+                    if (element.style.top !== '12%') {
+                        return 'After moving element to x = 7 and y = 12'
+                                + ', expected style.top to be 12%'
+                                + ', but it is: ' + element.style.top;
+                    }
+                });
+            </script>
+            <div class="task">
+                <p>
+                    You are moving a rectangle right next to given coordinates.
+                    But on this level, the test program won't give you the
+                    coordinates any more. You are getting only the element.
+                </p>
+                <p>
+                    You have to get the current coordinates of the rectangle
+                    from its style attributes:
+                </p>
+<pre>
+    var x = +element.style.left.replace('%', '');
+</pre>
+                <p>
+                    You can probably guess what replace is doing.
+                    The <code>+</code> marks the result as a number,
+                    not a string of characters.
+                    If <code>x</code> would be the string <code>'44'</code>,
+                    then <code>x + 1</code> is <code>'441'</code>.
+                    But if <code>x</code> is the number <code>44</code>,
+                    then <code>x + 1</code> becomes <code>45</code>.
+                </p>
+            </div>
+            <script>
+                window.taskTests.push(function (code) {
+                    removeAddedElements();
+                    eval(code);
+                    var element = createThing();
+                    moveElementTo(element);
+                    if (element.style.left !== '1%') {
+                        return 'After moving element to the right'
+                                + ', expected style.left to be 1%'
+                                + ', but it is: ' + element.style.left;
+                    }
+                    if (element.style.top !== '0%') {
+                        return 'After moving element to the right'
+                                + ', expected style.top to stay 0%'
+                                + ', but it is: ' + element.style.top;
+                    }
+                    moveElementTo(element);
+                    if (element.style.left !== '2%') {
+                        return 'After moving element to the right twice'
+                                + ', expected style.left to be 2%'
+                                + ', but it is: ' + element.style.left;
+                    }
+                    if (element.style.top !== '0%') {
+                        return 'After moving element to the right twice'
+                                + ', expected style.top to stay 0%'
+                                + ', but it is: ' + element.style.top;
+                    }
+                });
+            </script>
+            <div class="task">
+                <p>
+                    Next level.
+                    You are moving a rectangle to the right.
+                    We want you to move it to a target.
+                    We want you to change your function parameters:
+                </p>
+<pre>
+function moveElementTo(element, target) {
+    ...
+}
+</pre>
+                <p>
+                    Define the variables <code>targetX</code>
+                    and <code>targetY</code>.
+                    If the target is on the right side of <code>element</code>,
+                    then move it right.
+                    Such a condition is programmed with an <code>if</code>
+                    statement:
+                </p>
+<pre>
+    var targetX = +target.style.left.replace('%', '');
+    if (targetX > x) {
+        x = x + 1;
+        element.style.left = x + '%';
+    }
+</pre>
+            </div>
+            <script>
+                window.taskTests.push(function (code) {
+                    removeAddedElements();
+                    eval(code);
+                    var target = createThing();
+                    var element = createThing();
+                    target.style.backgroundColor = 'yellow';
+                    target.style.top = '1%';
+                    target.style.left = '5%';
+                    moveElementTo(element, target);
+                    if (element.style.left !== '1%') {
+                        return 'After moving element towards the target once'
+                                + ', expected style.left to be 1%'
+                                + ', but it is: ' + element.style.left;
+                    }
+                    if (element.style.top !== '0%') {
+                        return 'After moving element towards the target once'
+                                + ', expected style.top to stay 0%'
+                                + ', but it is: ' + element.style.top;
+                    }
+                    moveElementTo(element, target);
+                    if (element.style.left !== '2%') {
+                        return 'After moving element towards the target twice'
+                                + ', expected style.left to be 2%'
+                                + ', but it is: ' + element.style.left;
+                    }
+                    if (element.style.top !== '0%') {
+                        return 'After moving element towards the target twice'
+                                + ', expected style.top to stay 0%'
+                                + ', but it is: ' + element.style.top;
+                    }
+                    moveElementTo(element, target);
+                    moveElementTo(element, target);
+                    moveElementTo(element, target);
+                    moveElementTo(element, target);
+                    moveElementTo(element, target);
+                    if (element.style.left !== '5%') {
+                        return 'After moving element towards the target'
+                                + ', expected style.left to be 5%'
+                                + ', but it is: ' + element.style.left;
+                    }
+                    if (element.style.top !== '0%') {
+                        return 'After moving element towards the target'
+                                + ', expected style.top to stay 0%'
+                                + ', but it is: ' + element.style.top;
+                    }
+                });
+            </script>
+            <div class="task">
+                <p>
+                    You guessed your next task?
+                    If the target is below your element, move your element
+                    one step down: <code>y = y + 1</code>.
+                </p>
+                <p>
+                    Add the same logic for the case that the target is on
+                    the left or above your element.
+                    But do only one of these actions.
+                    You can use the keyword <code>else</code> for that:
+                </p>
+<pre>
+    if (targetX > x) {
+        ...
+    }
+    else if (targetX < x) {
+        ...
+    }
+    else if (targetY > y) {
+        ...
+    }
+    else if (targetY < y) {
+        ...
+    }
+</pre>
+            </div>
+            <script>
+                window.taskTests.push(function (code) {
+                    removeAddedElements();
+                    eval(code);
+                    var target = createThing();
+                    target.style.backgroundColor = 'yellow';
+                    target.style.top = '3%';
+                    target.style.left = '2%';
+                    var element = createThing();
+                    moveElementTo(element, target);
+                    if (element.style.left !== '1%') {
+                        return 'After moving element towards the target once'
+                                + ', expected style.left to be 1%'
+                                + ', but it is: ' + element.style.left;
+                    }
+                    if (element.style.top !== '0%') {
+                        return 'After moving element towards the target once'
+                                + ', expected style.top to stay 0%'
+                                + ', but it is: ' + element.style.top;
+                    }
+                    moveElementTo(element, target);
+                    if (element.style.left !== '2%') {
+                        return 'After moving element towards the target twice'
+                                + ', expected style.left to be 2%'
+                                + ', but it is: ' + element.style.left;
+                    }
+                    if (element.style.top !== '0%') {
+                        return 'After moving element towards the target twice'
+                                + ', expected style.top to stay 0%'
+                                + ', but it is: ' + element.style.top;
+                    }
+                    moveElementTo(element, target);
+                    if (element.style.left !== '2%') {
+                        return 'After moving element towards the target three times'
+                                + ', expected style.left to be 2%'
+                                + ', but it is: ' + element.style.left;
+                    }
+                    if (element.style.top !== '1%') {
+                        return 'After moving element towards the target three times'
+                                + ', expected style.top to be 1%'
+                                + ', but it is: ' + element.style.top;
+                    }
+                    moveElementTo(element, target);
+                    if (element.style.left !== '2%') {
+                        return 'After moving element towards the target four times'
+                                + ', expected style.left to be 2%'
+                                + ', but it is: ' + element.style.left;
+                    }
+                    if (element.style.top !== '2%') {
+                        return 'After moving element towards the target four times'
+                                + ', expected style.top to be 2%'
+                                + ', but it is: ' + element.style.top;
+                    }
+                    moveElementTo(element, target);
+                    if (element.style.left !== '2%') {
+                        return 'After moving element towards the target five times'
+                                + ', expected style.left to be 2%'
+                                + ', but it is: ' + element.style.left;
+                    }
+                    if (element.style.top !== '3%') {
+                        return 'After moving element towards the target five times'
+                                + ', expected style.top to be 3%'
+                                + ', but it is: ' + element.style.top;
+                    }
+                    moveElementTo(element, target);
+                    if (element.style.left !== '2%') {
+                        return 'After moving element towards the target six times'
+                                + ', expected style.left to be 2%'
+                                + ', but it is: ' + element.style.left;
+                    }
+                    if (element.style.top !== '3%') {
+                        return 'After moving element towards the target six times'
+                                + ', expected style.top to be 3%'
+                                + ', but it is: ' + element.style.top;
+                    }
+                    target.style.top = '1%';
+                    target.style.left = '2%';
+                    moveElementTo(element, target);
+                    moveElementTo(element, target);
+                    if (element.style.left !== '2%') {
+                        return 'After moving element towards a new target'
+                                + ', expected style.left to be 2%'
+                                + ', but it is: ' + element.style.left;
+                    }
+                    if (element.style.top !== '1%') {
+                        return 'After moving element towards a new target'
+                                + ', expected style.top to be 1%'
+                                + ', but it is: ' + element.style.top;
+                    }
+                });
+            </script>
+            <div class="task">
+                <p>
+                    Great.
+                    You can move a rectangle towards a target step by step.
+                    You are ready for more control.
+                    For the previous tasks,
+                    the test program used your <code>createThing()</code>
+                    to create your rectangle and a target rectangle.
+                    It placed the target somewhere
+                    and called <code>moveElementTo(element, target)</code>
+                    to move your rectangle towards the target.
+                </p>
+                <p>
+                    Add a new function called <code>main</code>
+                    without any parameters.
+                    In that function, create the target first.
+                    Use your defined function for that:
+                </p>
+<pre>
+    var target = createThing();
+</pre>
+                <p>
+                    Place the target at the coordinates <code>x = 3</code>
+                    and <code>y = 5</code>.
+                    Create another rectangle afterwards and assign it to the
+                    variable <code>element</code>.
+                    Last, call your <code>moveElementTo</code> function once
+                    to move the rectangle one step closer to the target.
+                </p>
+                <p>
+                    You might want to give the two rectangles different
+                    <a href="https://developer.mozilla.org/en/docs/Web/CSS/color_value"
+                       target="colours">colours</a>.
+                </p>
+            </div>
+            <script>
+                window.taskTests.push(function (code) {
+                    removeAddedElements();
+                    eval(code);
+                    if (typeof(main) !== 'function') {
+                        return 'Your code does not define a function called main.';
+                    }
+                    main();
+                    if (document.body.lastElementChild.id === 'working') {
+                        return 'You did not append a new element to the body.';
+                    }
+                    var last = document.body.lastElementChild;
+                    if (last.previousElementSibling.id === 'working') {
+                        return 'You appended only one newly created element to the body.';
+                    }
+                    var target = last.previousElementSibling;
+                    try {
+                        assertStyle(target, 'left', '3%');
+                        assertStyle(target, 'top', '5%');
+                        assertStyle(last, 'left', '1%');
+                        assertStyle(last, 'top', '0%');
+                    } catch (fail) {
+                        return fail;
+                    }
+                });
+            </script>
+            <div class="task">
+                <p>
+                    This is all following a big plan.
+                    If you got here, you are probably ready for the next
+                    cool feature of JavaScript.
+                    You wrote several functions so far.
+                    They have names like <code>moveElementTo</code>
+                    or <code>main</code>.
+                    But you can define anonymous functions as well:
+                </p>
+<pre>
+    function() {
+        // do something
+    }
+</pre>
+                <p>
+                    The question is:
+                    How can you call a function that has no name?
+                    And the answer is:
+                    You can assign it to a variable
+                    and call it by the variable's name.
+                    Why would you do that?
+                    You can pass the variable to another function.
+                    That other function can call your given function
+                    without knowing its name or what it actually does.
+                    Sounds complicated?
+                    It is.
+                    But we need it for the next task.
+                    Create an anonymous function
+                    and assign it to a variable called <code>action</code>:
+                </p>
+<pre>
+    var action = function() {
+        // do something
+    }
+</pre>
+                <p>
+                    Add that code to your <code>main</code> function.
+                    Move your call of <code>moveElementTo</code> inside
+                    the anonymous function.
+                    And last, return the variable <code>action</code>
+                    at the end of your <code>main</code> function.
+                </p>
+            </div>
+            <script>
+                window.taskTests.push(function (code) {
+                    removeAddedElements();
+                    eval(code);
+                    if (typeof(main) !== 'function') {
+                        return 'Your code does not define a function called main.';
+                    }
+                    var callback = main();
+                    if (document.body.lastElementChild.id === 'working') {
+                        return 'You did not append a new element to the body.';
+                    }
+                    var last = document.body.lastElementChild;
+                    if (last.previousElementSibling.id === 'working') {
+                        return 'You appended only one newly created element to the body.';
+                    }
+                    var target = last.previousElementSibling;
+                    try {
+                        assertStyle(target, 'left', '3%');
+                        assertStyle(target, 'top', '5%');
+                        assertStyle(last, 'left', '0%');
+                        assertStyle(last, 'top', '0%');
+                        if (typeof(callback) !== 'function') {
+                            return 'Your main function does not return a function,'
+                            + ' it returns: ' + callback;
+                        }
+                        callback();
+                        assertStyle(last, 'left', '1%');
+                        assertStyle(last, 'top', '0%');
+                    } catch (fail) {
+                        return fail;
+                    }
+                });
+            </script>
+            <div class="task">
+                <p>
+                    Now comes a fun part.
+                    We will see things moving.
+                    If we call your anonymous function multiple times,
+                    it will move the rectangle multiple times.
+                    But it will be so quick that you can't see it moving.
+                    You just see where it ended up after all movements.
+                    We have to give your eyes some time in between.
+                </p>
+                <p>
+                    JavaScript has a function to execute one command periodically.
+                    It's called <code>setInterval</code> and it takes
+                    two parameters:
+                </p>
+                <ol>
+                    <li><code>func</code>: a function like the anonymous
+                        function you defined. It will be executed in each
+                        interval.</li>
+                    <li><code>delay</code>: the time in milliseconds between
+                        the calls of <code>func</code>.</li>
+                </ol>
+<pre>
+    window.setInterval(action, 200);
+</pre>
+                <p>
+                    Add that line to your <code>main</code> function.
+                    Keep always in mind that the <code>return</code>
+                    statement is always the last to be executed
+                    in a function.
+                    Therefore, you have to insert the new line before that.
+                </p>
+            </div>
+            <script>
+                window.taskTests.push(function (code) {
+                    clearAddedIntervals();
+                    removeAddedElements();
+                    eval(code);
+                    main();
+                    if (window.intervalIDs.length !== 1) {
+                        return 'You did not call window.setInterval.';
+                    }
+                    var last = document.body.lastElementChild;
+                    if (last.id === 'working') {
+                        return 'You did not append the rectangles to the body.';
+                    }
+                    try {
+                        assertStyle(last, 'left', '0%');
+                        assertStyle(last, 'top', '0%');
+                    } catch (fail) {
+                        return fail;
+                    }
+                    var assertFirstMove = function() {
+                        try {
+                            assertStyle(last, 'left', '1%');
+                            assertStyle(last, 'top', '0%');
+                            window.setTimeout(assertFinalMove, 1600);
+                        } catch (fail) {
+                            document.getElementById('result').value = fail;
+                        }
+                    };
+                    var assertFinalMove = function() {
+                        var resultArea = document.getElementById('result');
+                        var nextButton = document.getElementById('next');
+                        try {
+                            assertStyle(last, 'left', '3%');
+                            assertStyle(last, 'top', '5%');
+                            resultArea.value = 'All tests passed.';
+                            resultArea.style.color = '#0f0';
+                            nextButton.disabled = '';
+                            star(+currentTask());
+                        } catch (fail) {
+                            resultArea.value = fail;
+                        }
+                    };
+                    window.setTimeout(assertFirstMove, 300);
+                    return 'Waiting for movements...';
+                });
+            </script>
+            <div class="task">
+                <p>
+                    You are ready for the real world stuff.
+                    Targets can be anywhere.
+                    We will place it randomly on the screen.
+                </p>
+                <p>
+                    JavaScript has a function to generate a random
+                    floating-point number
+                    between <code>0</code> and <code>1</code>.
+                </p>
+<pre>
+    var random = Math.random();
+</pre>
+                <p>
+                    But our coordinates are between <code>1</code> and
+                    <code>100</code>.
+                    You have to multiply the given number by <code>100</code>
+                    to get the scale right.
+                    The result will still be a floating-point number like
+                    <code>70.5226894644453</code>.
+                    To keep it simple, we should round that number to a close
+                    integer.
+                    Use the function <code>Math.floor</code> for that:
+                </p>
+<pre>
+    var randomCoordinate = Math.floor(random * 100);
+</pre>
+                <p>
+                    Add another function called <code>randomCoordinate</code>.
+                    It has no parameters and returns an integer between
+                    <code>0</code> and <code>100</code>.
+                </p>
+            </div>
+            <script>
+                window.taskTests.push(function (code) {
+                    clearAddedIntervals();
+                    removeAddedElements();
+                    eval(code);
+                    main();
+                    if (typeof(randomCoordinate) !== 'function') {
+                        return 'Your code does not define a function called randomCoordinate.';
+                    }
+                    var coordinates = {};
+                    var uniqueNumbers = 0;
+                    for (var i = 0; i < 100; i++) {
+                        var x = randomCoordinate();
+                        if (x !== Math.floor(x)) {
+                            return 'randomCoordinates() should return integers.'
+                            + ' But it returned: ' + x;
+                        }
+                        if (x < 0 || x > 99) {
+                            return 'randomCoordinates() should return numbers'
+                            + ' between 0 and 100 (excluded). That means 0..99.'
+                            + ' But it returned: ' + x;
+                        }
+                        if (coordinates[x] !== 1) {
+                            uniqueNumbers++;
+                        }
+                        coordinates[x] = 1;
+                    }
+                    if (uniqueNumbers < 5 || uniqueNumbers > 95) {
+                        return 'The numbers returned by randomCoordinates()'
+                        + ' are not that random.';
+                    }
+                });
+            </script>
+            <div class="task">
+                <p>
+                    Use your new <code>randomCoordinates</code> function in
+                    the <code>main</code> function
+                    to get a random <code>x</code> and
+                    a random <code>y</code> coordinate for both rectangles.
+                    Assign these to the style properties
+                    to place them randomly on the screen.
+                </p>
+            </div>
+            <script>
+                window.taskTests.push(function (code) {
+                    eval(code);
+                    clearAddedIntervals();
+                    removeAddedElements();
+                    main();
+                    if (window.intervalIDs.length !== 1) {
+                        return 'You did not call window.setInterval.';
+                    }
+                    var last = document.body.lastElementChild;
+                    if (last.id === 'working') {
+                        return 'You did not append the rectangles to the body.';
+                    }
+                    var target = last.previousElementSibling;
+                    if (target.id === 'working') {
+                        return 'You appended only one rectangle to the body.';
+                    }
+                    var lastLeft = new MatchCounter();
+                    var lastTop = new MatchCounter();
+                    var targetLeft = new MatchCounter();
+                    var targetTop = new MatchCounter();
+                    var lastSame = new MatchCounter();
+                    var targetSame = new MatchCounter();
+                    var leftSame = new MatchCounter();
+                    var topSame = new MatchCounter();
+                    for (var i = 0; i < 100; i++) {
+                        clearAddedIntervals();
+                        removeAddedElements();
+                        main();
+                        var last = document.body.lastElementChild;
+                        var target = last.previousElementSibling;
+                        lastLeft.add(last.style.left);
+                        lastTop.add(last.style.top);
+                        lastSame.compare(last.style.left, last.style.top);
+                        targetLeft.add(target.style.left);
+                        targetTop.add(target.style.top);
+                        targetSame.compare(target.style.left, target.style.top);
+                        leftSame.compare(last.style.left, target.style.left);
+                        topSame.compare(last.style.top, target.style.top);
+                    }
+
+                    if (lastLeft.unlikely()) {
+                        return lastLeft.matchPercent() + '% of'
+                        + ' element.style.left values are the same.';
+                    }
+                    if (lastTop.unlikely()) {
+                        return lastTop.matchPercent() + '% of'
+                        + ' element.style.top values are the same.';
+                    }
+                    if (lastSame.unlikelyHigh()) {
+                        return lastSame.matchPercent() + '% of'
+                        + ' element.style.top and element.style.left values'
+                        + ' are the same.';
+                    }
+                    if (targetLeft.unlikely()) {
+                        return targetLeft.matchPercent() + '% of'
+                        + ' target.style.left values are the same.';
+                    }
+                    if (targetTop.unlikely()) {
+                        return targetTop.matchPercent() + '% of'
+                        + ' target.style.top values are the same.';
+                    }
+                    if (targetSame.unlikelyHigh()) {
+                        return targetSame.matchPercent() + '% of'
+                        + ' target.style.top and target.style.left values'
+                        + ' are the same.';
+                    }
+                    if (leftSame.unlikelyHigh()) {
+                        return leftSame.matchPercent() + '% of the'
+                        + ' rectangles\' left style values'
+                        + ' are the same.';
+                    }
+                    if (topSame.unlikelyHigh()) {
+                        return topSame.matchPercent() + '% of the'
+                        + ' rectangles\' top style values'
+                        + ' are the same.';
+                    }
+                });
+            </script>
+            <div class="task">
+                <p>
+                    It's time to reveal a part of our plan.
+                    Your tasks will create a simulation of a video game
+                    known as <em>snake</em>.
+                    You already created a snake, one rectangle, that is
+                    looking for food, the target rectangle.
+                    We will call these two rectangles <em>snake head</em>
+                    and <em>target</em>.
+                </p>
+                <p>
+                    Once the snake head reaches the target,
+                    the snake should become longer
+                    and the target should appear somewhere else.
+                    The additional rectangles will be called
+                    <em>snake tail</em>.
+                </p>
+                <p>
+                    Look at the function
+                    <code>moveElementTo(element, target)</code>.
+                    It checks if the target is on the right, left, under or
+                    above the snake.
+                    If none of this is the case,
+                    then the snake has reached the target.
+                    After all these lines with <code>if</code>
+                    and <code>else</code> we can add a last
+                    <code>else</code> block.
+                </p>
+<pre>
+    ...
+    } else {
+        // code for letting the snake grow and moving the target
+    }
+</pre>
+                <p>
+                    How does the snake grow?
+                    Create a new rectangle with exactly the same properties
+                    as the snake head.
+                    JavaScript has a handy shortcut for that.
+                </p>
+<pre>
+        var tail = element.cloneNode();
+</pre>
+                <p>
+                    The new tail element has to be appended to the
+                    document's body again.
+                    And placing the target at new random coordinates
+                    should be no problem for you any more.
+                </p>
+            </div>
+            <script>
+                window.taskTests.push(function (code) {
+                    eval(code);
+                    clearAddedIntervals();
+                    removeAddedElements();
+                    main();
+                    var snake = document.body.lastElementChild;
+                    if (snake.id === 'working') {
+                        return 'You did not append the rectangles to the body.';
+                    }
+                    var target = snake.previousElementSibling;
+                    if (target.id === 'working') {
+                        return 'You appended only one rectangle to the body.';
+                    }
+                    snake.style.left = target.style.left;
+                    snake.style.top = target.style.top;
+                    moveElementTo(snake, target);
+                    if (snake === document.body.lastElementChild) {
+                        return 'moveElementTo(snake, target) did not append'
+                        + ' a new rectangle to the document.';
+                    }
+                    if (snake.style.left === target.style.left
+                            && snake.style.top === target.style.top) {
+                        return 'moveElementTo(snake, target) did not move'
+                        + ' the target to a new place.';
+                    }
+                });
+            </script>
+            <div class="task">
+                <p>
+                    You probably noticed that the snake tail is not moving yet.
+                    We need some logic to move it with the snake head.
+                    The snake tail needs to move every time the head moves.
+                    We can do that at the top of the
+                    <code>moveElementTo</code> function.
+                    But we can do that only if the snake has a tail already.
+                </p>
+<pre>
+    if (element.tail) {
+        element.tail.style.left = element.style.left;
+        element.tail.style.top = element.style.top;
+    }
+</pre>
+                <p>
+                    That was one step ahead.
+                    We use <code>element.tail</code> here,
+                    but we have to assign that variable to the snake before.
+                    Look further down, where the tail is created.
+                </p>
+<pre>
+        var tail = element.cloneNode();
+        element.tail = tail;
+</pre>
+                <p>
+                    You have to change your code accordingly or adapt
+                    the example and use <code>element</code> instead.
+                    Furthermore, you might wonder why we have to add this line.
+                    When you create a new tail and assign it to the variable
+                    <code>tail</code>,
+                    this variable is only available in this block of code.
+                    The next time <code>moveElementTo</code> is called,
+                    the <code>tail</code> variable is not there any more.
+                    Only if the snake reaches the target again,
+                    you create a new <code>tail</code> variable
+                    with a new rectangle.
+                    In order to remember that tail element, we have to store
+                    it somewhere.
+                    In this example, we store it as attribute of the
+                    <code>element</code> variable.
+                    The <code>moveElementTo</code> function is given the
+                    <code>element</code> variable as first argument
+                    and we can access its <code>tail</code> attribute as soon
+                    as the snake reached the target and the attribute was assigned.
+                </p>
+            </div>
+            <script>
+                window.taskTests.push(function (code) {
+                    eval(code);
+                    clearAddedIntervals();
+                    removeAddedElements();
+                    main();
+                    var snake = document.body.lastElementChild;
+                    if (snake.id === 'working') {
+                        return 'You did not append the rectangles to the body.';
+                    }
+                    var target = snake.previousElementSibling;
+                    if (target.id === 'working') {
+                        return 'You appended only one rectangle to the body.';
+                    }
+                    snake.style.left = target.style.left;
+                    snake.style.top = target.style.top;
+                    moveElementTo(snake, target);
+                    if (!snake.tail) {
+                        return 'The snake element has no tail attribute.';
+                    }
+                    if (snake.tail.style.left !== snake.style.left
+                            || snake.tail.style.top !== snake.style.top) {
+                        return 'The new tail is not at the same place as the head.';
+                    }
+                    moveElementTo(snake, target);
+                    var oldLeft = snake.style.left;
+                    var oldTop = snake.style.top;
+                    moveElementTo(snake, target);
+                    if (snake.style.left === snake.tail.style.left
+                            && snake.style.top === snake.tail.style.top) {
+                        return 'The tail is in the same spot as the head.';
+                    }
+                    if (snake.tail.style.left !== oldLeft
+                            || snake.tail.style.top !== oldTop) {
+                        return 'The tail does not follow the head.';
+                    }
+                });
+            </script>
+            <div class="task">
+                <p>
+                    One tail element is following the snake head.
+                    But only the newest one.
+                    When a new tail element is created,
+                    it is stored as <code>tail</code> attribute of the
+                    snake head element.
+                    But then we can't access the old tail anymore,
+                    which was stored as <code>tail</code> attribute of the
+                    snake head element before.
+                </p>
+                <p>
+                    You can solve that with a chain of tail elements.
+                    Imagine that each tail element has a
+                    <code>tail</code> attribute.
+                    The snake head has then a <code>tail</code> attribute
+                    storing the newest tail element.
+                    The newest tail element has a <code>tail</code> attribute
+                    that stores the second newest tail element.
+                    The the second newest stores the third newest and so on.
+                </p>
+                <p>
+                    All you need to do is to store the old tail element
+                    if the snake head has already a tail element.
+                    That old tail element has already a reference
+                    to the next older one.
+                </p>
+<pre>
+        var tail = element.cloneNode();
+        if (element.tail) {
+            tail.tail = element.tail;
+        }
+        element.tail = tail;
+</pre>
+                <p>
+                    That's a bit mind blowing.
+                    This kind of data structure is called a
+                    <em>linked list</em>.
+                </p>
+            </div>
+            <script>
+                window.taskTests.push(function (code) {
+                    eval(code);
+                    clearAddedIntervals();
+                    removeAddedElements();
+                    main();
+                    var snake = document.body.lastElementChild;
+                    if (snake.id === 'working') {
+                        return 'You did not append the rectangles to the body.';
+                    }
+                    var target = snake.previousElementSibling;
+                    if (target.id === 'working') {
+                        return 'You appended only one rectangle to the body.';
+                    }
+                    snake.style.left = target.style.left;
+                    snake.style.top = target.style.top;
+                    moveElementTo(snake, target);
+                    if (!snake.tail) {
+                        return 'The snake element has no tail attribute.';
+                    }
+                    if (snake === snake.tail) {
+                        return 'The snake\'s tail attribute points to the'
+                        + ' snake head instead of to the new tail.';
+                    }
+                    if (snake.tail.tail) {
+                        return 'The snake\'s tail is too long.'
+                        + 'Make sure that the oldest tail element has no tail itself.';
+                    }
+                    snake.style.left = target.style.left;
+                    snake.style.top = target.style.top;
+                    moveElementTo(snake, target);
+                    if (!snake.tail.tail) {
+                        return 'The snake\s tail is too short.'
+                        + ' Make sure to store the older tail element.';
+                    }
+                    if (snake.tail === snake.tail.tail) {
+                        return 'One tail attribute points to itself.';
+                    }
+                    if (snake.tail.tail.tail) {
+                        return 'The snake\'s tail is too long.'
+                        + 'Make sure that the oldest tail element has no tail itself.';
+                    }
+                });
+            </script>
+            <div class="task">
+                <p>
+                    Here comes the next mind blowing thing.
+                    All the tail elements are stored in this chain,
+                    in which each element knows the next one.
+                    But still, only the newest tail element is moved.
+                </p>
+                <p>
+                    In order to move the whole tail,
+                    add a new function called <code>moveTail</code>.
+                    It has one parameter <code>element</code>.
+                    This function contains the code for moving
+                    one tail element like before.
+                </p>
+<pre>
+function moveTail(element) {
+    if (element.tail) {
+        element.tail.style.left = element.style.left;
+        element.tail.style.top = element.style.top;
+    }
+}
+</pre>
+                <p>
+                    That is the same code used in the
+                    <code>moveElementTo</code> function.
+                    Replace that code with a simple call of
+                    <code>moveTail(element)</code>.
+                </p>
+                <p>
+                    Nothing won so far.
+                    We moved that code into its own function.
+                    But now, one line more does the trick.
+                    Look at the <code>moveTail</code> function.
+                    It takes an element and moves its tail
+                    to the element's position.
+                    Do the same for the tail's tail.
+                    Inside of the <code>if</code> block,
+                    just before the style attributes are copied,
+                    insert a line calling <code>moveTail(element.tail)</code>.
+                </p>
+                <p>
+                    Whenever you call <code>moveTail(element)</code>
+                    and that element has a tail,
+                    <code>moveTail</code> will be called with the element's
+                    tail as argument.
+                    That tail has its own tail attribute,
+                    so that <code>moveTail</code>
+                    will call itself with the tail's tail as argument
+                    and so on.
+                    That could be an infinite recursion
+                    and ends as soon as one element in that chain
+                    does not have a tail anymore.
+                    In that case, the <code>moveTail</code> function does
+                    nothing.
+                </p>
+                <p>
+                    In the end, <code>moveTail</code> will be called for each
+                    tail element,
+                    placing it at the same position as its previous element.
+                    Fortunately, the previous element is moved afterwards
+                    so that the tail elements don't end up at the same place
+                    together.
+                </p>
+            </div>
+            <script>
+                window.taskTests.push(function (code) {
+                    eval(code);
+                    clearAddedIntervals();
+                    removeAddedElements();
+                    main();
+                    var snake = document.body.lastElementChild;
+                    if (snake.id === 'working') {
+                        return 'You did not append the rectangles to the body.';
+                    }
+                    var target = snake.previousElementSibling;
+                    if (target.id === 'working') {
+                        return 'You appended only one rectangle to the body.';
+                    }
+                    snake.style.left = target.style.left;
+                    snake.style.top = target.style.top;
+                    moveElementTo(snake, target);
+                    if (!snake.tail) {
+                        return 'The snake element has no tail attribute.';
+                    }
+                    if (snake === snake.tail) {
+                        return 'The snake\'s tail attribute points to the'
+                        + ' snake head instead of to the new tail.';
+                    }
+                    if (snake.tail.tail) {
+                        return 'The snake\'s tail is too long.'
+                        + 'Make sure that the oldest tail element has no tail itself.';
+                    }
+                    snake.style.left = target.style.left;
+                    snake.style.top = target.style.top;
+                    moveElementTo(snake, target);
+                    if (!snake.tail.tail) {
+                        return 'The snake\s tail is too short.'
+                        + ' Make sure to store the older tail element.';
+                    }
+                    if (snake.tail === snake.tail.tail) {
+                        return 'One tail attribute points to itself.';
+                    }
+                    if (snake.tail.tail.tail) {
+                        return 'The snake\'s tail is too long.'
+                        + 'Make sure that the oldest tail element has no tail itself.';
+                    }
+
+                    if (typeof(moveTail) !== 'function') {
+                        return 'Your code does not define a function called moveTail.';
+                    }
+                    var element = {};
+                    moveTail(element);
+                    if (element.style || element.tail) {
+                        return 'moveTail changed an element without a tail.';
+                    }
+                    element.style = {
+                        left: '123%',
+                        top: '456%'
+                    };
+                    element.tail = {
+                        style: {
+                            left: '234%',
+                            top: '567%'
+                        },
+                        tail: {
+                            style: {
+                                left: '345%',
+                                top: '678%'
+                            }
+                        }
+                    };
+                    moveTail(element);
+                    if (element.style.left !== '123%'
+                            || element.style.top !== '456%') {
+                        return 'moveTail moves the snake head.';
+                    }
+                    if (element.tail.style.left !== '123%'
+                            || element.tail.style.top !== '456%') {
+                        return 'moveTail does not move the tail correctly.';
+                    }
+                    if (element.tail.tail.style.left !== '234%'
+                            || element.tail.tail.style.top !== '567%') {
+                        return 'moveTail does not move a tail\'s tail correctly.';
+                    }
+
+                });
+            </script>
+            <div class="task">
+                <p>
+                    This little snake simulation is just
+                    a small demonstration of your new JavaScript skills.
+                    There is a lot more to explore.
+                    Your final task is to add a simple line at the beginning of
+                    of the <code>main</code> function:
+                </p>
+<pre>
+    document.body.innerHTML = '';
+</pre>
+            </div>
+            <script>
+                window.taskTests.push(function (code) {
+                    eval(code);
+                    clearAddedIntervals();
+                    removeAddedElements();
+                    main();
+                    return 'Just one more line...';
+                });
+            </script>
+        </div>
+        <div id="working" data-current="-1">
+            <textarea id="code" cols="80" rows="20"></textarea>
+            <div>
+                <button onclick="test()">test</button>
+                <button id="next" onclick="nextTask()" disabled="">next</button>
+                <a href="#" onclick="save(this)">save</a>
+            </div>
+            <p><label for="result">Result:</label></p>
+            <textarea id="result" cols="80" rows="3" readonly="readonly"></textarea>
+        </div>
+    </body>
+</html>
