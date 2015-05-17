@@ -291,7 +291,7 @@
                 function recordNewIntervals() {
                     window.intervalIDs = [];
                     var oldSetInterval = window.setInterval;
-                    window.setInterval = function(func, delay) {
+                    window.setInterval = function (func, delay) {
                         var intervalID = oldSetInterval(func, delay);
                         window.intervalIDs.push(intervalID);
                         return intervalID;
@@ -307,27 +307,27 @@
                     this.values = {};
                     this.total = 0;
                     this.matches = 0;
-                    this.add = function(x) {
+                    this.add = function (x) {
                         this.total++;
                         if (this.total === 1 || this.values[x]) {
                             this.matches++;
                         }
                         this.values[x] = true;
                     };
-                    this.compare = function(x, y) {
+                    this.compare = function (x, y) {
                         this.total++;
                         if (x === y) {
                             this.matches++;
                         }
                     };
-                    this.matchPercent = function() {
+                    this.matchPercent = function () {
                         return this.matches * 100 / this.total;
                     };
-                    this.unlikely = function() {
+                    this.unlikely = function () {
                         var p = this.matchPercent();
                         return p < 5 || p > 95;
                     };
-                    this.unlikelyHigh = function() {
+                    this.unlikelyHigh = function () {
                         return this.matchPercent() > 95;
                     };
                 }
@@ -357,8 +357,8 @@
                         result = eval(code);
                     } catch (err) {
                         return "What you entered is no valid Javascript.\n"
-                            + "Just type 'Hello World'. Don't forget the single quotes.\n"
-                            + "Don't append a semicolon or anything else.\n";
+                                + "Just type 'Hello World'. Don't forget the single quotes.\n"
+                                + "Don't append a semicolon or anything else.\n";
                     }
                     if (result !== 'Hello World') {
                         return "Expected 'Hello World', but got: " + result;
@@ -375,11 +375,10 @@
                     Now, you have to write a <code>function</code> that returns
                     'Hello World'. A function looks like this:
                 </p>
-<pre>
+                <pre>
 function funkyFunctionName() {
     return 'Pan Galactic Gargle Blaster';
-}
-</pre>
+}</pre>
                 <p>
                     This cute little function is called 'funkyFunctionName'
                     and returns the string 'Pan Galactic Gargle Blaster'.
@@ -404,7 +403,7 @@ function funkyFunctionName() {
             <script>
                 window.taskTests.push(function (code) {
                     eval(code);
-                    if (typeof(helloWorld) !== 'function') {
+                    if (typeof (helloWorld) !== 'function') {
                         return 'Your code does not define a function called helloWorld.';
                     }
                     var result = helloWorld();
@@ -413,43 +412,42 @@ function funkyFunctionName() {
                     }
                 });
             </script>
-        <div class="task">
-            <p>
-                <em>Hello student!</em>
-                Wonderful.
-                Such a smart program.
-                <span title="NOT!">You almost think it's intelligent.</span>
-            </p>
-            <p>
-                Let's do something useful now.
-                Let's create an HTML element.
-                The most general element is a
-                <code>div</code> element.
-                You can create a div element with the following code:
-            </p>
-<pre>
-    document.createElement('div')
-</pre>
-            <p>
-                Define a new function called <code>createThing</code>.
-                And make that function return a div element.
-                You need only one statement in that function.
-                It begins with return and ends with a semicolon.
-            </p>
-        </div>
-        <script>
-            window.taskTests.push(function (code) {
-                eval(code);
-                if (typeof(createThing) !== 'function') {
-                    return 'Your code does not define a function called createThing.';
-                }
-                var result = createThing();
-                var resultType = Object.prototype.toString.call(result);
-                if (resultType !== '[object HTMLDivElement]') {
-                    return "Expected an object of HTMLDivElement, but got: " + result;
-                }
-            });
-        </script>
+            <div class="task">
+                <p>
+                    <em>Hello student!</em>
+                    Wonderful.
+                    Such a smart program.
+                    <span title="NOT!">You almost think it's intelligent.</span>
+                </p>
+                <p>
+                    Let's do something useful now.
+                    Let's create an HTML element.
+                    The most general element is a
+                    <code>div</code> element.
+                    You can create a div element with the following code:
+                </p>
+                <pre>
+    document.createElement('div')</pre>
+                <p>
+                    Define a new function called <code>createThing</code>.
+                    And make that function return a div element.
+                    You need only one statement in that function.
+                    It begins with return and ends with a semicolon.
+                </p>
+            </div>
+            <script>
+                window.taskTests.push(function (code) {
+                    eval(code);
+                    if (typeof (createThing) !== 'function') {
+                        return 'Your code does not define a function called createThing.';
+                    }
+                    var result = createThing();
+                    var resultType = Object.prototype.toString.call(result);
+                    if (resultType !== '[object HTMLDivElement]') {
+                        return "Expected an object of HTMLDivElement, but got: " + result;
+                    }
+                });
+            </script>
             <div class="task">
                 <p>
                     Okay, we got a div element.
@@ -463,9 +461,8 @@ function funkyFunctionName() {
                     we have to assign it to a variable.
                     Let's call it <code>divElem</code>:
                 </p>
-<pre>
-    var divElem = document.createElement('div');
-</pre>
+                <pre>
+    var divElem = document.createElement('div');</pre>
                 <p>
                     Each HTML element has a style attribute.
                     Its style attribute defines how this element should be displayed.
@@ -473,11 +470,10 @@ function funkyFunctionName() {
                     Cascading Style Sheets language.
                     For example, we can give it a width and a height:
                 </p>
-<pre>
+                <pre>
     var divElem = document.createElement('div');
     divElem.style.width = '30px';
-    divElem.style.height = '30px';
-</pre>
+    divElem.style.height = '30px';</pre>
                 <p>
                     Create a div element like in this example.
                     And give it some more style attributes:
@@ -546,9 +542,8 @@ function funkyFunctionName() {
                     there is always the <code>body</code> element.
                     Attach it with this additional line:
                 </p>
-<pre>
-    document.body.appendChild(divElem);
-</pre>
+                <pre>
+    document.body.appendChild(divElem);</pre>
             </div>
             <script>
                 window.taskTests.push(function (code) {
@@ -567,7 +562,7 @@ function funkyFunctionName() {
                     }
                     if (document.body.lastElementChild !== result) {
                         return 'The returned element ' + result
-                        + ' is not the last element within the body.';
+                                + ' is not the last element within the body.';
                     }
                 });
             </script>
@@ -591,15 +586,14 @@ function funkyFunctionName() {
                     The parameters are listed with commas in the brackets
                     after the function name:
                 </p>
-<pre>
+                <pre>
 function createThing() {
     ...
 }
 
 function moveElementTo(element, x, y) {
     ...
-}
-</pre>
+}</pre>
                 <p>
                     The parameters <code>x</code> and <code>y</code>
                     will be simple numbers
@@ -607,9 +601,8 @@ function moveElementTo(element, x, y) {
                     Given the parameter <code>x = 5</code>,
                     we want the element to be 5% from the left window side:
                 </p>
-<pre>
-    element.style.left = x + '%';
-</pre>
+                <pre>
+    element.style.left = x + '%';</pre>
                 <p>
                     The expression <code>x + '%'</code> is taking whatever is
                     in the parameter <code>x</code> and appending a
@@ -662,9 +655,8 @@ function moveElementTo(element, x, y) {
                     Let's move your rectangle a bit further right.
                     Insert this line at the top of your function:
                 </p>
-<pre>
-    x = x + 1;
-</pre>
+                <pre>
+    x = x + 1;</pre>
                 <p>
                     That statement says from left to right:
                     "Assign to the variable <code>x</code> the value of
@@ -702,9 +694,8 @@ function moveElementTo(element, x, y) {
                     You have to get the current coordinates of the rectangle
                     from its style attributes:
                 </p>
-<pre>
-    var x = +element.style.left.replace('%', '');
-</pre>
+                <pre>
+    var x = +element.style.left.replace('%', '');</pre>
                 <p>
                     You can probably guess what replace is doing.
                     The <code>+</code> marks the result as a number,
@@ -751,11 +742,10 @@ function moveElementTo(element, x, y) {
                     We want you to move it to a target.
                     We want you to change your function parameters:
                 </p>
-<pre>
+                <pre>
 function moveElementTo(element, target) {
     ...
-}
-</pre>
+}</pre>
                 <p>
                     Define the variables <code>targetX</code>
                     and <code>targetY</code>.
@@ -764,13 +754,12 @@ function moveElementTo(element, target) {
                     Such a condition is programmed with an <code>if</code>
                     statement:
                 </p>
-<pre>
+                <pre>
     var targetX = +target.style.left.replace('%', '');
     if (targetX > x) {
         x = x + 1;
         element.style.left = x + '%';
-    }
-</pre>
+    }</pre>
             </div>
             <script>
                 window.taskTests.push(function (code) {
@@ -832,7 +821,7 @@ function moveElementTo(element, target) {
                     But do only one of these actions.
                     You can use the keyword <code>else</code> for that:
                 </p>
-<pre>
+                <pre>
     if (targetX > x) {
         ...
     }
@@ -844,8 +833,7 @@ function moveElementTo(element, target) {
     }
     else if (targetY < y) {
         ...
-    }
-</pre>
+    }</pre>
             </div>
             <script>
                 window.taskTests.push(function (code) {
@@ -956,9 +944,8 @@ function moveElementTo(element, target) {
                     In that function, create the target first.
                     Use your defined function for that:
                 </p>
-<pre>
-    var target = createThing();
-</pre>
+                <pre>
+    var target = createThing();</pre>
                 <p>
                     Place the target at the coordinates <code>x = 3</code>
                     and <code>y = 5</code>.
@@ -977,7 +964,7 @@ function moveElementTo(element, target) {
                 window.taskTests.push(function (code) {
                     removeAddedElements();
                     eval(code);
-                    if (typeof(main) !== 'function') {
+                    if (typeof (main) !== 'function') {
                         return 'Your code does not define a function called main.';
                     }
                     main();
@@ -1009,11 +996,10 @@ function moveElementTo(element, target) {
                     or <code>main</code>.
                     But you can define anonymous functions as well:
                 </p>
-<pre>
-    function() {
+                <pre>
+    function () {
         // do something
-    }
-</pre>
+    }</pre>
                 <p>
                     The question is:
                     How can you call a function that has no name?
@@ -1030,11 +1016,10 @@ function moveElementTo(element, target) {
                     Create an anonymous function
                     and assign it to a variable called <code>action</code>:
                 </p>
-<pre>
-    var action = function() {
+                <pre>
+    var action = function () {
         // do something
-    }
-</pre>
+    }</pre>
                 <p>
                     Add that code to your <code>main</code> function.
                     Move your call of <code>moveElementTo</code> inside
@@ -1047,7 +1032,7 @@ function moveElementTo(element, target) {
                 window.taskTests.push(function (code) {
                     removeAddedElements();
                     eval(code);
-                    if (typeof(main) !== 'function') {
+                    if (typeof (main) !== 'function') {
                         return 'Your code does not define a function called main.';
                     }
                     var callback = main();
@@ -1064,9 +1049,9 @@ function moveElementTo(element, target) {
                         assertStyle(target, 'top', '5%');
                         assertStyle(last, 'left', '0%');
                         assertStyle(last, 'top', '0%');
-                        if (typeof(callback) !== 'function') {
+                        if (typeof (callback) !== 'function') {
                             return 'Your main function does not return a function,'
-                            + ' it returns: ' + callback;
+                                    + ' it returns: ' + callback;
                         }
                         callback();
                         assertStyle(last, 'left', '1%');
@@ -1098,9 +1083,8 @@ function moveElementTo(element, target) {
                     <li><code>delay</code>: the time in milliseconds between
                         the calls of <code>func</code>.</li>
                 </ol>
-<pre>
-    window.setInterval(action, 200);
-</pre>
+                <pre>
+    window.setInterval(action, 200);</pre>
                 <p>
                     Add that line to your <code>main</code> function.
                     Keep always in mind that the <code>return</code>
@@ -1128,7 +1112,7 @@ function moveElementTo(element, target) {
                     } catch (fail) {
                         return fail;
                     }
-                    var assertFirstMove = function() {
+                    var assertFirstMove = function () {
                         try {
                             assertStyle(last, 'left', '1%');
                             assertStyle(last, 'top', '0%');
@@ -1137,7 +1121,7 @@ function moveElementTo(element, target) {
                             document.getElementById('result').value = fail;
                         }
                     };
-                    var assertFinalMove = function() {
+                    var assertFinalMove = function () {
                         var resultArea = document.getElementById('result');
                         var nextButton = document.getElementById('next');
                         try {
@@ -1166,9 +1150,8 @@ function moveElementTo(element, target) {
                     floating-point number
                     between <code>0</code> and <code>1</code>.
                 </p>
-<pre>
-    var random = Math.random();
-</pre>
+                <pre>
+    var random = Math.random();</pre>
                 <p>
                     But our coordinates are between <code>1</code> and
                     <code>100</code>.
@@ -1180,9 +1163,8 @@ function moveElementTo(element, target) {
                     integer.
                     Use the function <code>Math.floor</code> for that:
                 </p>
-<pre>
-    var randomCoordinate = Math.floor(random * 100);
-</pre>
+                <pre>
+    var randomCoordinate = Math.floor(random * 100);</pre>
                 <p>
                     Add another function called <code>randomCoordinate</code>.
                     It has no parameters and returns an integer between
@@ -1195,7 +1177,7 @@ function moveElementTo(element, target) {
                     removeAddedElements();
                     eval(code);
                     main();
-                    if (typeof(randomCoordinate) !== 'function') {
+                    if (typeof (randomCoordinate) !== 'function') {
                         return 'Your code does not define a function called randomCoordinate.';
                     }
                     var coordinates = {};
@@ -1204,12 +1186,12 @@ function moveElementTo(element, target) {
                         var x = randomCoordinate();
                         if (x !== Math.floor(x)) {
                             return 'randomCoordinates() should return integers.'
-                            + ' But it returned: ' + x;
+                                    + ' But it returned: ' + x;
                         }
                         if (x < 0 || x > 99) {
                             return 'randomCoordinates() should return numbers'
-                            + ' between 0 and 100 (excluded). That means 0..99.'
-                            + ' But it returned: ' + x;
+                                    + ' between 0 and 100 (excluded). That means 0..99.'
+                                    + ' But it returned: ' + x;
                         }
                         if (coordinates[x] !== 1) {
                             uniqueNumbers++;
@@ -1218,7 +1200,7 @@ function moveElementTo(element, target) {
                     }
                     if (uniqueNumbers < 5 || uniqueNumbers > 95) {
                         return 'The numbers returned by randomCoordinates()'
-                        + ' are not that random.';
+                                + ' are not that random.';
                     }
                 });
             </script>
@@ -1275,39 +1257,39 @@ function moveElementTo(element, target) {
 
                     if (lastLeft.unlikely()) {
                         return lastLeft.matchPercent() + '% of'
-                        + ' element.style.left values are the same.';
+                                + ' element.style.left values are the same.';
                     }
                     if (lastTop.unlikely()) {
                         return lastTop.matchPercent() + '% of'
-                        + ' element.style.top values are the same.';
+                                + ' element.style.top values are the same.';
                     }
                     if (lastSame.unlikelyHigh()) {
                         return lastSame.matchPercent() + '% of'
-                        + ' element.style.top and element.style.left values'
-                        + ' are the same.';
+                                + ' element.style.top and element.style.left values'
+                                + ' are the same.';
                     }
                     if (targetLeft.unlikely()) {
                         return targetLeft.matchPercent() + '% of'
-                        + ' target.style.left values are the same.';
+                                + ' target.style.left values are the same.';
                     }
                     if (targetTop.unlikely()) {
                         return targetTop.matchPercent() + '% of'
-                        + ' target.style.top values are the same.';
+                                + ' target.style.top values are the same.';
                     }
                     if (targetSame.unlikelyHigh()) {
                         return targetSame.matchPercent() + '% of'
-                        + ' target.style.top and target.style.left values'
-                        + ' are the same.';
+                                + ' target.style.top and target.style.left values'
+                                + ' are the same.';
                     }
                     if (leftSame.unlikelyHigh()) {
                         return leftSame.matchPercent() + '% of the'
-                        + ' rectangles\' left style values'
-                        + ' are the same.';
+                                + ' rectangles\' left style values'
+                                + ' are the same.';
                     }
                     if (topSame.unlikelyHigh()) {
                         return topSame.matchPercent() + '% of the'
-                        + ' rectangles\' top style values'
-                        + ' are the same.';
+                                + ' rectangles\' top style values'
+                                + ' are the same.';
                     }
                 });
             </script>
@@ -1339,21 +1321,19 @@ function moveElementTo(element, target) {
                     and <code>else</code> we can add a last
                     <code>else</code> block.
                 </p>
-<pre>
+                <pre>
     ...
     } else {
         // code for letting the snake grow and moving the target
-    }
-</pre>
+    }</pre>
                 <p>
                     How does the snake grow?
                     Create a new rectangle with exactly the same properties
                     as the snake head.
                     JavaScript has a handy shortcut for that.
                 </p>
-<pre>
-        var tail = element.cloneNode();
-</pre>
+                <pre>
+        var tail = element.cloneNode();</pre>
                 <p>
                     The new tail element has to be appended to the
                     document's body again.
@@ -1380,12 +1360,12 @@ function moveElementTo(element, target) {
                     moveElementTo(snake, target);
                     if (snake === document.body.lastElementChild) {
                         return 'moveElementTo(snake, target) did not append'
-                        + ' a new rectangle to the document.';
+                                + ' a new rectangle to the document.';
                     }
                     if (snake.style.left === target.style.left
                             && snake.style.top === target.style.top) {
                         return 'moveElementTo(snake, target) did not move'
-                        + ' the target to a new place.';
+                                + ' the target to a new place.';
                     }
                 });
             </script>
@@ -1398,22 +1378,20 @@ function moveElementTo(element, target) {
                     <code>moveElementTo</code> function.
                     But we can do that only if the snake has a tail already.
                 </p>
-<pre>
+                <pre>
     if (element.tail) {
         element.tail.style.left = element.style.left;
         element.tail.style.top = element.style.top;
-    }
-</pre>
+    }</pre>
                 <p>
                     That was one step ahead.
                     We use <code>element.tail</code> here,
                     but we have to assign that variable to the snake before.
                     Look further down, where the tail is created.
                 </p>
-<pre>
+                <pre>
         var tail = element.cloneNode();
-        element.tail = tail;
-</pre>
+        element.tail = tail;</pre>
                 <p>
                     You have to change your code accordingly or adapt
                     the example and use <code>element</code> instead.
@@ -1501,13 +1479,12 @@ function moveElementTo(element, target) {
                     That old tail element has already a reference
                     to the next older one.
                 </p>
-<pre>
+                <pre>
         var tail = element.cloneNode();
         if (element.tail) {
             tail.tail = element.tail;
         }
-        element.tail = tail;
-</pre>
+        element.tail = tail;</pre>
                 <p>
                     That's a bit mind blowing.
                     This kind of data structure is called a
@@ -1536,25 +1513,25 @@ function moveElementTo(element, target) {
                     }
                     if (snake === snake.tail) {
                         return 'The snake\'s tail attribute points to the'
-                        + ' snake head instead of to the new tail.';
+                                + ' snake head instead of to the new tail.';
                     }
                     if (snake.tail.tail) {
                         return 'The snake\'s tail is too long.'
-                        + 'Make sure that the oldest tail element has no tail itself.';
+                                + 'Make sure that the oldest tail element has no tail itself.';
                     }
                     snake.style.left = target.style.left;
                     snake.style.top = target.style.top;
                     moveElementTo(snake, target);
                     if (!snake.tail.tail) {
                         return 'The snake\s tail is too short.'
-                        + ' Make sure to store the older tail element.';
+                                + ' Make sure to store the older tail element.';
                     }
                     if (snake.tail === snake.tail.tail) {
                         return 'One tail attribute points to itself.';
                     }
                     if (snake.tail.tail.tail) {
                         return 'The snake\'s tail is too long.'
-                        + 'Make sure that the oldest tail element has no tail itself.';
+                                + 'Make sure that the oldest tail element has no tail itself.';
                     }
                 });
             </script>
@@ -1572,14 +1549,13 @@ function moveElementTo(element, target) {
                     This function contains the code for moving
                     one tail element like before.
                 </p>
-<pre>
+                <pre>
 function moveTail(element) {
     if (element.tail) {
         element.tail.style.left = element.style.left;
         element.tail.style.top = element.style.top;
     }
-}
-</pre>
+}</pre>
                 <p>
                     That is the same code used in the
                     <code>moveElementTo</code> function.
@@ -1644,28 +1620,28 @@ function moveTail(element) {
                     }
                     if (snake === snake.tail) {
                         return 'The snake\'s tail attribute points to the'
-                        + ' snake head instead of to the new tail.';
+                                + ' snake head instead of to the new tail.';
                     }
                     if (snake.tail.tail) {
                         return 'The snake\'s tail is too long.'
-                        + 'Make sure that the oldest tail element has no tail itself.';
+                                + 'Make sure that the oldest tail element has no tail itself.';
                     }
                     snake.style.left = target.style.left;
                     snake.style.top = target.style.top;
                     moveElementTo(snake, target);
                     if (!snake.tail.tail) {
                         return 'The snake\s tail is too short.'
-                        + ' Make sure to store the older tail element.';
+                                + ' Make sure to store the older tail element.';
                     }
                     if (snake.tail === snake.tail.tail) {
                         return 'One tail attribute points to itself.';
                     }
                     if (snake.tail.tail.tail) {
                         return 'The snake\'s tail is too long.'
-                        + 'Make sure that the oldest tail element has no tail itself.';
+                                + 'Make sure that the oldest tail element has no tail itself.';
                     }
 
-                    if (typeof(moveTail) !== 'function') {
+                    if (typeof (moveTail) !== 'function') {
                         return 'Your code does not define a function called moveTail.';
                     }
                     var element = {};
@@ -1713,9 +1689,8 @@ function moveTail(element) {
                     Your final task is to add a simple line at the beginning of
                     of the <code>main</code> function:
                 </p>
-<pre>
-    document.body.innerHTML = '';
-</pre>
+                <pre>
+    document.body.innerHTML = '';</pre>
             </div>
             <script>
                 window.taskTests.push(function (code) {
