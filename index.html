@@ -30,11 +30,11 @@
                         var e = elementsWithName[i];
                         e.innerHTML = e.innerHTML.split('%name').join(name);
                     }
-                    var el = document.getElementsByClassName('leaveUp')[0];
-                    el.style.animationPlayState = 'running';
+                    var el = document.getElementById('namequestion');
+                    el.className += ' leaveUp';
                     var greeting = document.getElementById('greeting');
                     greeting.style.display = 'block';
-                    greeting.style.animationPlayState = 'running';
+                    greeting.className = 'fadeIn';
                 }
                 return txtArea || !enterPressed;
             }
@@ -42,13 +42,12 @@
             function startmission() {
                 nextTask();
                 var greeting = document.getElementById('greeting');
-                greeting.style.opacity = '1';
-                greeting.style.animation = 'fadeout 1s ease 0ms 1 normal forwards';
+                greeting.className = 'fadeOut';
                 setTimeout(function () {
                     greeting.style.display = 'none';
                     var working = document.getElementById('working');
                     working.style.display = 'block';
-                    working.style.animationPlayState = 'running';
+                    working.className = 'quickFadeIn';
                 }, 1000);
             }
 
@@ -126,7 +125,9 @@
                 }
                 var star = stars.children[0].cloneNode(true);
                 stars.appendChild(star);
-                star.style.animationPlayState = 'running';
+                setTimeout(2000, function () {
+                    star.className = '';
+                });
             }
 
         </script>
@@ -136,10 +137,27 @@
                 background-color: black;
                 text-align: center;
             }
+            @-webkit-keyframes zoom {
+                to {
+                    visibility: visible;
+                    font-size: 4000%;
+                }
+            }
             @keyframes zoom {
                 to {
                     visibility: visible;
                     font-size: 4000%;
+                }
+            }
+            @-webkit-keyframes zoomStay {
+                from {
+                    font-size: 0%;
+                }
+                50% {
+                    font-size: 3000%;
+                }
+                to {
+                    font-size: 200%;
                 }
             }
             @keyframes zoomStay {
@@ -153,6 +171,14 @@
                     font-size: 200%;
                 }
             }
+            @-webkit-keyframes reveal {
+                from {
+                    width: 0px;
+                }
+                to {
+                    width: 23em;
+                }
+            }
             @keyframes reveal {
                 from {
                     width: 0px;
@@ -161,17 +187,37 @@
                     width: 23em;
                 }
             }
-            @keyframes leaveUp {
+            @-webkit-keyframes leaveUp {
                 from {
                     top: 0em;
+                    height: 2em;
                 }
                 to {
                     top: -10em;
+                    height: 0em;
                 }
+            }
+            @keyframes leaveUp {
+                from {
+                    top: 0em;
+                    height: 2em;
+                }
+                to {
+                    top: -10em;
+                    height: 0em;
+                }
+            }
+            @-webkit-keyframes fadein {
+                from { opacity: 0; }
+                to   { opacity: 1; }
             }
             @keyframes fadein {
                 from { opacity: 0; }
                 to   { opacity: 1; }
+            }
+            @-webkit-keyframes fadeout {
+                from { opacity: 1; }
+                to   { opacity: 0; }
             }
             @keyframes fadeout {
                 from { opacity: 1; }
@@ -182,6 +228,9 @@
                 font-size: 0%;
                 text-align: center;
                 margin: auto;
+                -webkit-animation: zoom 2s;
+                -webkit-animation-direction: alternate;
+                -webkit-animation-iteration-count: 2;
                 animation: zoom 2s;
                 animation-direction: alternate;
                 animation-iteration-count: 2;
@@ -203,17 +252,29 @@
                 width: 0px;
                 white-space: nowrap;
                 overflow: hidden;
+                -webkit-animation: reveal 2s linear 4.5s 1 normal forwards;
                 animation: reveal 2s linear 4.5s 1 normal forwards;
             }
             .leaveUp {
                 position: relative;
+                -webkit-animation: leaveUp 2s ease 0s 1 normal forwards;
                 animation: leaveUp 2s ease 0s 1 normal forwards;
-                animation-play-state: paused;
+            }
+            .fadeIn {
+                -webkit-animation: fadein 2s ease 500ms 1 normal forwards;
+                animation: fadein 2s ease 500ms 1 normal forwards;
+            }
+            .quickFadeIn {
+                -webkit-animation: fadein 0.5s ease 0ms 1 normal forwards;
+                animation: fadein 0.5s ease 0ms 1 normal forwards;
+            }
+            .fadeOut {
+                opacity: 1;
+                -webkit-animation: fadeout 1s ease 0ms 1 normal forwards;
+                animation: fadeout 1s ease 0ms 1 normal forwards;
             }
             #greeting {
                 opacity: 0;
-                animation: fadein 2s ease 500ms 1 normal forwards;
-                animation-play-state: paused;
                 display: none;
             }
             #tasks div {
@@ -234,21 +295,22 @@
                 color: #ff0;
             }
             #stars {
-                height: 3em;
+                height: 2em;
             }
             #stars span {
                 display: inline-block;
                 vertical-align: top;
                 position: relative;
-                font-size: 0%;
+            }
+            #stars span.animated {
+                -webkit-animation: zoomStay 2s 1 normal forwards;
                 animation: zoomStay 2s 1 normal forwards;
-                animation-play-state: paused;
                 z-index: 1;
             }
+            #stars span:first-child {
+                display: none;
+            }
             #working {
-                opacity: 0;
-                animation: fadein 0.5s ease 0ms 1 normal forwards;
-                animation-play-state: paused;
                 display: none;
             }
             #working p {
@@ -259,7 +321,7 @@
 
     <body>
         <h2 id="questionmark">?</h2>
-        <div class="leaveUp">
+        <div id="namequestion">
             <div id="nameinput"><label for="name">Enter your name:</label> <input id="name" name="name" type="text"></div>
         </div>
         <div id="greeting">
@@ -270,7 +332,7 @@
             </p>
             <p><button onclick="startmission()">I agree</button></p>
         </div>
-        <div id="stars"><span>✪</span></div>
+        <div id="stars"><span class="animated">✪</span></div>
         <div id="tasks">
             <script>
                 recordNewIntervals();
