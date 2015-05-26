@@ -448,41 +448,45 @@ function funkyFunctionName() {
                 </p>
                 <p>
                     <code>function</code> is a keyword to define a function.
-                    It is followed by the new function's name.
+                    It is followed by the new function's name
+                    &mdash; <code>funkyFunctionName</code>.
                     The round brackets <code>()</code> can contain parameters.
                     You will learn about them later.
                     The curly brackets denote a block of code which is executed
                     when the function is called.
-                    In this example, the code block has only one statement.
-                    It returns a string to whatever calls this function.
+                    In this example, the code block has only one statement
+                    to execute.
+                    It returns the string
+                    'Pan Galactic Gargle Blaster'
+                    to whatever calls this function.
                     Each statement needs a semicolon <code>;</code> at the end.
-                    Semicolons separate statements.
                 </p>
                 <p>
-                    Now, write a function called <code>helloWorld</code>
-                    that returns 'Hello World'.
+                    Remove your <code>'Hello World'</code> from the text field
+                    and replace it with the code above.
                 </p>
             </div>
             <script>
                 window.taskTests.push(function (code) {
-                    eval(code);
-                    if (typeof (helloWorld) !== 'function') {
-                        return 'Your code does not define a function called helloWorld.';
+                    var value = eval(code);
+                    if (value) {
+                        return 'Your code should only define a function.'
+                        + ' But it has a value as well: ' + value;
                     }
-                    var result = helloWorld();
-                    if (result !== 'Hello World') {
-                        return "Expected 'Hello World', but got: " + result;
+                    if (typeof (funkyFunctionName) !== 'function') {
+                        return 'Your code does not define a function called funkyFunctionName.';
+                    }
+                    var result = funkyFunctionName();
+                    if (result !== 'Pan Galactic Gargle Blaster') {
+                        return "The function funkyFunctionName should return"
+                        + " 'Pan Galactic Gargle Blaster', but returned: "
+                        + result;
                     }
                 });
             </script>
             <div class="task">
                 <p>
-                    <em>Hello student!</em>
-                    Wonderful.
-                    Such a smart program.
-                    <span title="NOT!">You almost think it's intelligent.</span>
-                </p>
-                <p>
+                    Cool. Copy and paste works.
                     Let's do something useful now.
                     Let's create an HTML element.
                     The most general element is a
@@ -492,19 +496,26 @@ function funkyFunctionName() {
                 <pre>
     document.createElement('div')</pre>
                 <p>
-                    Define a new function called <code>createThing</code>.
-                    And make that function return a div element.
-                    You need only one statement in that function.
-                    It begins with return and ends with a semicolon.
+                    Replace <code>'Pan Galactic Gargle Blaster'</code>
+                    with the code above.
+                    Be exact, an apostrophe at the wrong place
+                    or a missing semicolon can cause everything to fail.
+                    But if you get it right,
+                    your function will create a <code>div</code> element
+                    and return it.
                 </p>
             </div>
             <script>
                 window.taskTests.push(function (code) {
-                    eval(code);
-                    if (typeof (createThing) !== 'function') {
-                        return 'Your code does not define a function called createThing.';
+                    var value = eval(code);
+                    if (value) {
+                        return 'Your code should only define a function.'
+                        + ' But it has a value as well: ' + value;
                     }
-                    var result = createThing();
+                    if (typeof (funkyFunctionName) !== 'function') {
+                        return 'Your code does not define a function called funkyFunctionName.';
+                    }
+                    var result = funkyFunctionName();
                     var resultType = Object.prototype.toString.call(result);
                     if (resultType !== '[object HTMLDivElement]') {
                         return "Expected an object of HTMLDivElement, but got: " + result;
@@ -513,13 +524,35 @@ function funkyFunctionName() {
             </script>
             <div class="task">
                 <p>
-                    Okay, we got a div element.
-                    But where is it? Can you see it?
-                    At the moment, our element is empty, has zero size
+                    Excellent.
+                    Your function is doing something useful.
+                    But it still has a silly name.
+                    Rename it to <code>createDiv</code>.
+                </p>
+            </div>
+            <script>
+                window.taskTests.push(function (code) {
+                    eval(code);
+                    if (typeof (createDiv) !== 'function') {
+                        return 'Your code does not define a function called createDiv.';
+                    }
+                    var result = createDiv();
+                    var resultType = Object.prototype.toString.call(result);
+                    if (resultType !== '[object HTMLDivElement]') {
+                        return "Expected an object of HTMLDivElement, but got: " + result;
+                    }
+                });
+            </script>
+            <div class="task">
+                <p>
+                    Hurray, we got a div element.
+                    But where is it?
+                    Well, at the moment, our element is empty, has zero size
                     and is therefore not visible.
                 </p>
                 <p>
-                    Before we can do something with this element,
+                    We want to change that.
+                    But before we can do something with this element,
                     we have to give it a name;
                     we have to assign it to a variable.
                     Let's call it <code>divElem</code>:
@@ -581,7 +614,7 @@ function funkyFunctionName() {
                 window.taskTests.push(function (code) {
                     removeAddedElements();
                     eval(code);
-                    var result = createThing();
+                    var result = createDiv();
                     try {
                         assertStyle(result, 'position', 'fixed');
                         assertStyle(result, 'top', '0%');
@@ -612,7 +645,7 @@ function funkyFunctionName() {
                 window.taskTests.push(function (code) {
                     removeAddedElements();
                     eval(code);
-                    var result = createThing();
+                    var result = createDiv();
                     try {
                         assertStyle(result, 'position', 'fixed');
                         assertStyle(result, 'top', '0%');
@@ -636,7 +669,7 @@ function funkyFunctionName() {
                     That was created by you. Now, let's move it.
                 </p>
                 <p>
-                    Keep your function <code>createThing</code> and
+                    Keep your function <code>createDiv</code> and
                     add a new function called <code>moveElementTo</code> below it.
                     But this one has three parameters:
                 </p>
@@ -650,7 +683,7 @@ function funkyFunctionName() {
                     after the function name:
                 </p>
                 <pre>
-function createThing() {
+function createDiv() {
     ...
 }
 
@@ -681,7 +714,7 @@ function moveElementTo(element, x, y) {
                 window.taskTests.push(function (code) {
                     removeAddedElements();
                     eval(code);
-                    var element = createThing();
+                    var element = createDiv();
                     try {
                         assertStyle(element, 'position', 'fixed');
                         assertStyle(element, 'top', '0%');
@@ -733,7 +766,7 @@ function moveElementTo(element, x, y) {
                 window.taskTests.push(function (code) {
                     removeAddedElements();
                     eval(code);
-                    var element = createThing();
+                    var element = createDiv();
                     moveElementTo(element, 7, 12);
                     if (element.style.left !== '8%') {
                         return 'After moving element to x = 7 and y = 12'
@@ -773,7 +806,7 @@ function moveElementTo(element, x, y) {
                 window.taskTests.push(function (code) {
                     removeAddedElements();
                     eval(code);
-                    var element = createThing();
+                    var element = createDiv();
                     moveElementTo(element);
                     if (element.style.left !== '1%') {
                         return 'After moving element to the right'
@@ -828,8 +861,8 @@ function moveElementTo(element, target) {
                 window.taskTests.push(function (code) {
                     removeAddedElements();
                     eval(code);
-                    var target = createThing();
-                    var element = createThing();
+                    var target = createDiv();
+                    var element = createDiv();
                     target.style.backgroundColor = 'yellow';
                     target.style.top = '1%';
                     target.style.left = '5%';
@@ -902,11 +935,11 @@ function moveElementTo(element, target) {
                 window.taskTests.push(function (code) {
                     removeAddedElements();
                     eval(code);
-                    var target = createThing();
+                    var target = createDiv();
                     target.style.backgroundColor = 'yellow';
                     target.style.top = '3%';
                     target.style.left = '2%';
-                    var element = createThing();
+                    var element = createDiv();
                     moveElementTo(element, target);
                     if (element.style.left !== '1%') {
                         return 'After moving element towards the target once'
@@ -995,7 +1028,7 @@ function moveElementTo(element, target) {
                     You can move a rectangle towards a target step by step.
                     You are ready for more control.
                     For the previous tasks,
-                    the test program used your <code>createThing()</code>
+                    the test program used your <code>createDiv()</code>
                     to create your rectangle and a target rectangle.
                     It placed the target somewhere
                     and called <code>moveElementTo(element, target)</code>
@@ -1008,7 +1041,7 @@ function moveElementTo(element, target) {
                     Use your defined function for that:
                 </p>
                 <pre>
-    var target = createThing();</pre>
+    var target = createDiv();</pre>
                 <p>
                     Place the target at the coordinates <code>x = 3</code>
                     and <code>y = 5</code>.
